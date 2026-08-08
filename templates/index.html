@@ -1,91 +1,166 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Cadastro de Itens</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-            margin: 0;
-            padding: 40px;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
         }
 
         .container {
-            max-width: 700px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
         }
 
         h1 {
             text-align: center;
-            color: #333;
+            color: #f8fafc;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        h2 {
+            color: #f1f5f9;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
         }
 
         .card {
-            background: white;
-            padding: 25px;
-            margin-top: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         }
 
         label {
             display: block;
             margin-top: 15px;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: #cbd5e1;
         }
 
         input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
+            padding: 14px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder {
+            color: #64748b;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            background: rgba(15, 23, 42, 0.8);
         }
 
         button {
             width: 100%;
-            margin-top: 20px;
-            padding: 12px;
+            margin-top: 25px;
+            padding: 14px;
             border: none;
-            border-radius: 6px;
-            background: #007bff;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
             color: white;
-            font-size: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
             cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
         }
 
         button:hover {
-            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .item {
-            padding: 15px 0;
-            border-bottom: 1px solid #ddd;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
         }
 
-        .item:last-child {
-            border-bottom: none;
+        .item:hover {
+            background: rgba(15, 23, 42, 0.6);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: scale(1.01);
         }
 
         .item p {
-            margin: 5px 0;
+            margin: 6px 0;
+            font-size: 0.95rem;
+            color: #94a3b8;
+        }
+
+        .item p strong {
+            color: #f1f5f9;
+            font-weight: 600;
+            margin-right: 5px;
         }
 
         .vazio {
-            color: #777;
+            color: #64748b;
             text-align: center;
+            font-style: italic;
+            padding: 20px 0;
         }
     </style>
 </head>
@@ -96,106 +171,47 @@
 
         <h1>Cadastro de Itens</h1>
 
-
         <!-- FORMULÁRIO -->
         <div class="card">
-
-            <h2>Cadastrar item</h2>
+            <h2>Cadastrar novo cliente</h2>
 
             <form action="/clientes" method="POST">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" required>
 
-                <label for="nome">
-                    Nome
-                </label>
+                <label for="telefone">Telefone</label>
+                <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
 
-                <input
-                    type="text"
-                    id="nome"
-                    name="nome"
-                    placeholder="Digite o nome"
-                    required
-                >
+                <label for="valor">Valor (R$)</label>
+                <input type="number" id="valor" name="valor" step="0.01" placeholder="Ex: 150.00" required>
 
-
-                <label for="telefone">
-                    Telefone
-                </label>
-
-                <input
-                    type="text"
-                    id="telefone"
-                    name="telefone"
-                    placeholder="Digite o telefone"
-                    required
-                >
-
-
-                <label for="valor">
-                    Valor
-                </label>
-
-                <input
-                    type="number"
-                    id="valor"
-                    name="valor"
-                    step="0.01"
-                    placeholder="Digite o valor"
-                    required
-                >
-
-
-                <button type="submit">
-                    Cadastrar
-                </button>
-
+                <button type="submit">Cadastrar Cliente</button>
             </form>
-
         </div>
-
 
         <!-- LISTA -->
         <div class="card">
+            <h2>Clientes Cadastrados</h2>
 
-            <h2>Itens cadastrados</h2>
-
-            {% if clientes %}
-
-                {% for cliente in clientes %}
-
-                    <div class="item">
-
-                        <p>
-                            <strong>Nome:</strong>
-                            {{ cliente.nome }}
-                        </p>
-
-                        <p>
-                            <strong>Telefone:</strong>
-                            {{ cliente.telefone }}
-                        </p>
-
-                        <p>
-                            <strong>Valor:</strong>
-                            R$ {{ cliente.valor }}
-                        </p>
-
-                    </div>
-
-                {% endfor %}
-
-            {% else %}
-
-                <p class="vazio">
-                    Nenhum item cadastrado.
-                </p>
-
-            {% endif %}
-
+            <div class="list-container">
+                {% if clientes %}
+                    {% for cliente in clientes %}
+                        <div class="item">
+                            <p><strong>Nome:</strong> {{ cliente.nome }}</p>
+                            <p><strong>Telefone:</strong> {{ cliente.telefone }}</p>
+                            {% if cliente.endereço %}
+                            <p><strong>Endereço:</strong> {{ cliente.endereço }}</p>
+                            {% endif %}
+                            <p><strong>Valor:</strong> R$ {{ cliente.valor }}</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="vazio">Nenhum cliente cadastrado ainda.</p>
+                {% endif %}
+            </div>
         </div>
 
     </div>
 
 </body>
-
 </html>
-```
