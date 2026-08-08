@@ -1,0 +1,201 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cadastro de Itens</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .item {
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .item p {
+            margin: 5px 0;
+        }
+
+        .vazio {
+            color: #777;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Cadastro de Itens</h1>
+
+
+        <!-- FORMULÁRIO -->
+        <div class="card">
+
+            <h2>Cadastrar item</h2>
+
+            <form action="/clientes" method="POST">
+
+                <label for="nome">
+                    Nome
+                </label>
+
+                <input
+                    type="text"
+                    id="nome"
+                    name="nome"
+                    placeholder="Digite o nome"
+                    required
+                >
+
+
+                <label for="telefone">
+                    Telefone
+                </label>
+
+                <input
+                    type="text"
+                    id="telefone"
+                    name="telefone"
+                    placeholder="Digite o telefone"
+                    required
+                >
+
+
+                <label for="valor">
+                    Valor
+                </label>
+
+                <input
+                    type="number"
+                    id="valor"
+                    name="valor"
+                    step="0.01"
+                    placeholder="Digite o valor"
+                    required
+                >
+
+
+                <button type="submit">
+                    Cadastrar
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- LISTA -->
+        <div class="card">
+
+            <h2>Itens cadastrados</h2>
+
+            {% if clientes %}
+
+                {% for cliente in clientes %}
+
+                    <div class="item">
+
+                        <p>
+                            <strong>Nome:</strong>
+                            {{ cliente.nome }}
+                        </p>
+
+                        <p>
+                            <strong>Telefone:</strong>
+                            {{ cliente.telefone }}
+                        </p>
+
+                        <p>
+                            <strong>Valor:</strong>
+                            R$ {{ cliente.valor }}
+                        </p>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p class="vazio">
+                    Nenhum item cadastrado.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+```
