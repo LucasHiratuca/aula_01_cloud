@@ -4,14 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Itens</title>
-    
+    <title>Cadastro de Clientes | Cloud App</title>
+    <meta name="description" content="Sistema de cadastro de clientes conectado ao MySQL na nuvem">
+
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons (CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-card: rgba(15, 23, 42, 0.65);
+            --bg-card-hover: rgba(20, 30, 55, 0.8);
+            --bg-input: rgba(10, 15, 30, 0.7);
+            --bg-input-focus: rgba(10, 15, 30, 0.9);
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(255, 255, 255, 0.12);
+            --border-focus: #818cf8;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #475569;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.35);
+            --success: #34d399;
+            --success-glow: rgba(52, 211, 153, 0.2);
+            --danger: #f87171;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -20,198 +47,505 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            color: #e2e8f0;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
-            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        /* ===== FUNDO ANIMADO ===== */
+        .bg-glow {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-glow .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            animation: float 12s ease-in-out infinite alternate;
+        }
+
+        .bg-glow .orb:nth-child(1) {
+            width: 500px; height: 500px;
+            background: #4f46e5;
+            top: -150px; left: -100px;
+        }
+
+        .bg-glow .orb:nth-child(2) {
+            width: 400px; height: 400px;
+            background: #7c3aed;
+            bottom: -100px; right: -80px;
+            animation-delay: -4s;
+        }
+
+        .bg-glow .orb:nth-child(3) {
+            width: 300px; height: 300px;
+            background: #2563eb;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -8s;
+        }
+
+        @keyframes float {
+            0%   { transform: translate(0, 0) scale(1); }
+            50%  { transform: translate(30px, -20px) scale(1.05); }
+            100% { transform: translate(-20px, 15px) scale(0.95); }
+        }
+
+        /* ===== LAYOUT PRINCIPAL ===== */
+        .page-wrapper {
+            position: relative;
+            z-index: 1;
+            padding: 40px 20px 60px;
             display: flex;
             justify-content: center;
         }
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 860px;
             display: flex;
             flex-direction: column;
             gap: 2rem;
         }
 
-        h1 {
+        /* ===== HEADER ===== */
+        .header {
             text-align: center;
-            color: #f8fafc;
-            font-size: 2.5rem;
-            font-weight: 700;
             margin-bottom: 0.5rem;
-            letter-spacing: -0.025em;
         }
 
-        h2 {
-            color: #f1f5f9;
-            font-size: 1.5rem;
+        .header .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent-glow);
+            color: #a5b4fc;
+            font-size: 0.75rem;
             font-weight: 600;
-            margin-bottom: 1.5rem;
+            padding: 6px 14px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
         }
 
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #e0e7ff 0%, #a5b4fc 50%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-top: 10px;
+            font-weight: 400;
+        }
+
+        /* ===== CARDS ===== */
         .card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            padding: 32px;
+            border-radius: var(--radius-xl);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
         .card:hover {
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border-color: var(--border-hover);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title .icon-circle {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .card-title .icon-circle.accent {
+            background: var(--accent-glow);
+            color: #a5b4fc;
+        }
+
+        .card-title .icon-circle.green {
+            background: var(--success-glow);
+            color: var(--success);
+        }
+
+        .card-title h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* ===== FORMULÁRIO ===== */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
         }
 
         label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 8px;
             font-weight: 500;
-            font-size: 0.95rem;
-            color: #cbd5e1;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            letter-spacing: 0.02em;
         }
 
         input {
             width: 100%;
-            padding: 14px 16px;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            font-size: 1rem;
-            color: #f8fafc;
+            padding: 13px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            color: var(--text-primary);
             font-family: 'Inter', sans-serif;
             transition: all 0.3s ease;
         }
 
         input::placeholder {
-            color: #64748b;
+            color: var(--text-muted);
         }
 
         input:focus {
             outline: none;
-            border-color: #6366f1;
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
-            background: rgba(15, 23, 42, 0.8);
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+            background: var(--bg-input-focus);
         }
 
-        button {
+        .btn-submit {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             width: 100%;
-            margin-top: 25px;
+            margin-top: 8px;
             padding: 14px;
             border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #818cf8 100%);
             color: white;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+            box-shadow: 0 4px 15px var(--accent-glow);
+            position: relative;
+            overflow: hidden;
         }
 
-        button:hover {
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-submit:hover::before {
+            left: 100%;
+        }
+
+        .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6);
+            box-shadow: 0 8px 25px var(--accent-glow);
         }
 
-        button:active {
+        .btn-submit:active {
             transform: translateY(0);
+        }
+
+        /* ===== LISTA DE CLIENTES ===== */
+        .stats-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stats-bar .count {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .stats-bar .count span {
+            color: var(--accent);
+            font-weight: 700;
         }
 
         .list-container {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .item {
-            background: rgba(15, 23, 42, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            padding: 20px 24px;
+            border-radius: var(--radius-lg);
+            transition: all 0.35s ease;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .item::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 3px; height: 100%;
+            background: linear-gradient(180deg, var(--accent), #818cf8);
+            border-radius: 0 4px 4px 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .item:hover {
-            background: rgba(15, 23, 42, 0.6);
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: scale(1.01);
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            transform: translateX(4px);
         }
 
-        .item p {
-            margin: 6px 0;
-            font-size: 0.95rem;
-            color: #94a3b8;
+        .item:hover::before {
+            opacity: 1;
         }
 
-        .item p strong {
-            color: #f1f5f9;
+        .item .field {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .item .field-label {
+            font-size: 0.7rem;
             font-weight: 600;
-            margin-right: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+        }
+
+        .item .field-value {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .item .field-value.money {
+            color: var(--success);
+            font-weight: 700;
         }
 
         .vazio {
-            color: #64748b;
             text-align: center;
-            font-style: italic;
-            padding: 20px 0;
+            padding: 40px 20px;
+        }
+
+        .vazio .empty-icon {
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        .vazio p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .vazio p.hint {
+            font-size: 0.8rem;
+            margin-top: 6px;
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            padding-top: 1rem;
+            opacity: 0.6;
+        }
+
+        /* ===== ANIMAÇÃO DE ENTRADA ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .header     { animation: fadeInUp 0.6s ease both; }
+        .card:nth-child(2) { animation: fadeInUp 0.6s ease 0.15s both; }
+        .card:nth-child(3) { animation: fadeInUp 0.6s ease 0.3s both; }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 600px) {
+            .header h1 { font-size: 2rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .item { grid-template-columns: 1fr; }
+            .card { padding: 24px 20px; }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
-
-        <h1>Cadastro de Itens</h1>
-
-        <!-- FORMULÁRIO -->
-        <div class="card">
-            <h2>Cadastrar novo cliente</h2>
-
-            <form action="/clientes" method="POST">
-                <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" required>
-
-                <label for="telefone">Telefone</label>
-                <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
-
-                <label for="valor">Valor (R$)</label>
-                <input type="number" id="valor" name="valor" step="0.01" placeholder="Ex: 150.00" required>
-
-                <button type="submit">Cadastrar Cliente</button>
-            </form>
-        </div>
-
-        <!-- LISTA -->
-        <div class="card">
-            <h2>Clientes Cadastrados</h2>
-
-            <div class="list-container">
-                {% if clientes %}
-                    {% for cliente in clientes %}
-                        <div class="item">
-                            <p><strong>Nome:</strong> {{ cliente.nome }}</p>
-                            <p><strong>Telefone:</strong> {{ cliente.telefone }}</p>
-                            {% if cliente.endereço %}
-                            <p><strong>Endereço:</strong> {{ cliente.endereço }}</p>
-                            {% endif %}
-                            <p><strong>Valor:</strong> R$ {{ cliente.valor }}</p>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p class="vazio">Nenhum cliente cadastrado ainda.</p>
-                {% endif %}
-            </div>
-        </div>
-
+    <!-- Fundo animado com orbes de luz -->
+    <div class="bg-glow">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
     </div>
+
+    <div class="page-wrapper">
+        <div class="container">
+
+            <!-- HEADER -->
+            <div class="header">
+                <div class="badge">
+                    <i data-lucide="cloud" style="width:14px;height:14px;"></i>
+                    Cloud App — MySQL
+                </div>
+                <h1>Cadastro de Clientes</h1>
+                <p>Sistema conectado ao banco de dados MySQL na nuvem</p>
+            </div>
+
+            <!-- FORMULÁRIO -->
+            <div class="card">
+                <div class="card-title">
+                    <div class="icon-circle accent">
+                        <i data-lucide="user-plus" style="width:18px;height:18px;"></i>
+                    </div>
+                    <h2>Novo Cliente</h2>
+                </div>
+
+                <form action="/clientes" method="POST">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="nome">Nome completo</label>
+                            <input type="text" id="nome" name="nome" placeholder="Ex: João da Silva" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefone">Telefone</label>
+                            <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="valor">Valor (R$)</label>
+                            <input type="number" id="valor" name="valor" step="0.01" placeholder="150.00" required>
+                        </div>
+
+                        <button type="submit" class="btn-submit">
+                            <i data-lucide="send" style="width:18px;height:18px;"></i>
+                            Cadastrar Cliente
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- LISTA DE CLIENTES -->
+            <div class="card">
+                <div class="card-title">
+                    <div class="icon-circle green">
+                        <i data-lucide="users" style="width:18px;height:18px;"></i>
+                    </div>
+                    <h2>Clientes Cadastrados</h2>
+                </div>
+
+                {% if clientes %}
+                <div class="stats-bar">
+                    <div class="count"><span>{{ clientes|length }}</span> cliente{{ 's' if clientes|length != 1 else '' }} encontrado{{ 's' if clientes|length != 1 else '' }}</div>
+                </div>
+                {% endif %}
+
+                <div class="list-container">
+                    {% if clientes %}
+                        {% for cliente in clientes %}
+                            <div class="item">
+                                <div class="field">
+                                    <span class="field-label">Nome</span>
+                                    <span class="field-value">{{ cliente.nome }}</span>
+                                </div>
+                                <div class="field">
+                                    <span class="field-label">Telefone</span>
+                                    <span class="field-value">{{ cliente.telefone }}</span>
+                                </div>
+                                {% if cliente['endereço'] %}
+                                <div class="field">
+                                    <span class="field-label">Endereço</span>
+                                    <span class="field-value">{{ cliente['endereço'] }}</span>
+                                </div>
+                                {% endif %}
+                                <div class="field">
+                                    <span class="field-label">Valor</span>
+                                    <span class="field-value money">R$ {{ "%.2f"|format(cliente.valor|float) }}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="vazio">
+                            <div class="empty-icon">
+                                <i data-lucide="inbox" style="width:48px;height:48px;"></i>
+                            </div>
+                            <p>Nenhum cliente cadastrado ainda.</p>
+                            <p class="hint">Use o formulário acima para adicionar o primeiro!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="footer">
+                Aula 01 — Introdução à Computação em Nuvem
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Ativa os ícones Lucide -->
+    <script>lucide.createIcons();</script>
 
 </body>
 </html>

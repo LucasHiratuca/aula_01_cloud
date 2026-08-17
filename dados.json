@@ -3,5 +3,20 @@
     "nome": "João",
     "telefone": "14999999999",
     "valor": 150
+  },
+  {
+    "nome": "Joao Silva",
+    "telefone": "(11) 98765-4321",
+    "valor": 150.5
+  },
+  {
+    "nome": "João Silva",
+    "telefone": "(11) 98765-4321",
+    "valor": 150.5
+  },
+  {
+    "nome": "sasasas",
+    "telefone": "23424",
+    "valor": "32"
   }
 ]
